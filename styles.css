@@ -10,6 +10,8 @@ body {
 
 .container {
     text-align: center;
+    width: 100%;
+    max-width: 800px; /* Adjust the maximum width */
 }
 
 .player {
@@ -22,20 +24,21 @@ body {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 18px;
     cursor: pointer;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .progress-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: 20px;
+    max-width: 800px; /* Adjust the maximum width */
+    height: 25px;
     background-color: #ddd;
-    margin-top: 20px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .progress-bar {
@@ -52,6 +55,13 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    cursor: pointer;
     width: 0;
+}
+.volume-container {
+    margin-top: 20px;
+}
+
+#volume {
+    width: 100%;
+    max-width: 300px;
 }
