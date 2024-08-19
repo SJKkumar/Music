@@ -55,13 +55,3 @@ body {
     cursor: pointer;
     width: 0;
 }
-@media (max-width: 600px) {
-    .progress-container {
-        height: 15px;
-    }
-
-    #play-pause {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-}
