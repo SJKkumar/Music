@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progress-bar');
     const progress = document.getElementById('progress');
     const progressContainer = document.querySelector('.progress-container');
+    const volumeControl = document.getElementById('volume');
 
     // Play/Pause Button Toggle
     playPauseButton.addEventListener('click', () => {
@@ -31,5 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = e.clientX - rect.left;
         const percent = x / progressContainer.offsetWidth;
         audioPlayer.currentTime = percent * audioPlayer.duration;
+    });
+
+    // Volume Control
+    volumeControl.addEventListener('input', () => {
+        audioPlayer.volume = volumeControl.value;
     });
 });
