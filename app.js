@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // List of music files
     const songs = [
-        { title: 'Song 1', url: 'https://raw.githubusercontent.com/SJKkumar/Music/songs/Makkamishi.mp3' },
-        { title: 'Song 2', url: 'https://raw.githubusercontent.com/SJKkumar/Music/songs/Aasa Kooda.mp3' },
+        { title: 'Song 1', url: 'https://github.com/SJKkumar/Music/blob/main/songs/Makkamishi.mp3' },
+        { title: 'Song 2', url: 'https://github.com/SJKkumar/Music/blob/main/songs/Makkamishi.mp3' },
         // Add more songs here
     ];
 
