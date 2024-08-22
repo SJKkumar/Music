@@ -7,6 +7,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -24,6 +25,13 @@ h1 {
 .player {
     background-color: #333;
     padding: 20px;
+    border-radius: 10px;
+}
+
+.album-art {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
     border-radius: 10px;
 }
 
@@ -115,6 +123,24 @@ h1 {
     right: 20px;
 }
 
+.scrollable-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.scrollable-list a {
+    display: block;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+}
+
+.scrollable-list a:hover {
+    background-color: #555;
+}
+
 .popup {
     display: none;
     background-color: #333;
@@ -127,16 +153,6 @@ h1 {
     text-align: left;
 }
 
-.popup select {
-    width: 100%;
-    padding: 10px;
-    background-color: #444;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
 .close-btn {
     background-color: #ff6600;
     color: white;
@@ -147,4 +163,17 @@ h1 {
     position: absolute;
     top: -20px;
     right: -20px;
+}
+
+.theme-btn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 20px;
 }
