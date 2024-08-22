@@ -51,8 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Album Art
     function updateAlbumArt(songUrl) {
-        // This is a placeholder. Replace with actual logic to fetch and set album art if available
-        albumArt.src = 'default-image.jpg'; // Placeholder image
+        // Logic to fetch album art can go here. For now, use a placeholder.
+        albumArt.src = 'default-image.jpg'; // Placeholder image for unavailable album art
+
+        // If you want to simulate actual album art fetching:
+        // For example, you can use a dummy URL or actual logic to fetch the art.
+        // Here we're just using a static default image.
     }
 
     // Play/Pause Button Toggle
