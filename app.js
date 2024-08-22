@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressContainer = document.querySelector('.progress-container');
     const volumeControl = document.getElementById('volume');
     const songSelector = document.getElementById('song-selector');
-    const disc = document.querySelector('.disc');
+    const menuButton = document.getElementById('menu-button');
+    const songListPopup = document.getElementById('song-list-popup');
+    const closePopupButton = document.getElementById('close-popup');
 
     // GitHub API URL to fetch the list of files in the 'songs' directory
     const apiURL = 'https://api.github.com/repos/SJKkumar/Music/contents/songs';
@@ -41,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (audioPlayer.paused) {
             audioPlayer.play();
             playPauseButton.textContent = '⏸️';
-            disc.style.animationPlayState = 'running';
+            playPauseButton.classList.add('playing');
         } else {
             audioPlayer.pause();
             playPauseButton.textContent = '▶️';
-            disc.style.animationPlayState = 'paused';
+            playPauseButton.classList.remove('playing');
         }
     });
 
@@ -76,29 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seek Functionality
     progressContainer.addEventListener('click', (e) => {
-        const rect = progressContainer.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const percent = x / progressContainer.offsetWidth;
-        audioPlayer.currentTime = percent * audioPlayer.duration;
-    });
-
-    // Volume Control
-    volumeControl.addEventListener('input', () => {
-        audioPlayer.volume = volumeControl.value;
-    });
-
-    // Song Selector
-    songSelector.addEventListener('change', () => {
-        currentSongIndex = songSelector.selectedIndex;
-        audioPlayer.src = songSelector.value;
-        audioPlayer.play();
-        playPauseButton.textContent = '⏸️';
-        disc.style.animationPlayState = 'running';
-    });
-
-    // Stop disc animation when audio ends
-    audioPlayer.addEventListener('ended', () => {
-        disc.style.animationPlayState = 'paused';
-        playPauseButton.textContent = '▶️';
-    });
-});
+        const rect = progress
