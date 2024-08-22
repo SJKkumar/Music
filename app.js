@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = document.getElementById('progress');
     const progressContainer = document.querySelector('.progress-container');
     const volumeControl = document.getElementById('volume');
+    const songSelector = document.getElementById('song-selector');
 
     // Play/Pause Button Toggle
     playPauseButton.addEventListener('click', () => {
@@ -37,5 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Volume Control
     volumeControl.addEventListener('input', () => {
         audioPlayer.volume = volumeControl.value;
+    });
+
+    // Song Selector
+    songSelector.addEventListener('change', () => {
+        const selectedSong = songSelector.value;
+        audioPlayer.src = `https://raw.githubusercontent.com/SJKkumar/Music/main/songs/${selectedSong}`;
+        audioPlayer.play();
+        playPauseButton.textContent = 'Pause';
     });
 });
