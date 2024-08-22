@@ -28,14 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (file.name.endsWith('.mp3')) { // Only add .mp3 files
                     const songItem = document.createElement('a');
                     songItem.href = file.download_url;
-                    songItem.textContent = file.name.replace('.mp3', ''); // Display name without the .mp3 extension
+                    songItem.textContent = decodeURIComponent(file.name.replace('.mp3', '')); // Decode the URL
                     songItem.addEventListener('click', (e) => {
                         e.preventDefault();
                         audioPlayer.src = file.download_url;
                         audioPlayer.play();
                         playPauseButton.textContent = '⏸️';
                         currentSongIndex = songList.indexOf(file.download_url);
-                        songName.textContent = file.name.replace('.mp3', '');
+                        songName.textContent = decodeURIComponent(file.name.replace('.mp3', '')); // Decode the URL
                         updateAlbumArt(file.download_url); // Update album art if available
                     });
                     scrollableSongList.appendChild(songItem);
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set initial song
             if (songList.length > 0) {
                 audioPlayer.src = songList[0];
-                songName.textContent = songList[0].split('/').pop().replace('.mp3', '');
+                songName.textContent = decodeURIComponent(songList[0].split('/').pop().replace('.mp3', '')); // Decode the URL
                 updateAlbumArt(songList[0]);
             }
         })
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.src = songList[currentSongIndex];
         audioPlayer.play();
         playPauseButton.textContent = '⏸️';
-        songName.textContent = songList[currentSongIndex].split('/').pop().replace('.mp3', '');
+        songName.textContent = decodeURIComponent(songList[currentSongIndex].split('/').pop().replace('.mp3', '')); // Decode the URL
         updateAlbumArt(songList[currentSongIndex]);
     });
 
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.src = songList[currentSongIndex];
         audioPlayer.play();
         playPauseButton.textContent = '⏸️';
-        songName.textContent = songList[currentSongIndex].split('/').pop().replace('.mp3', '');
+        songName.textContent = decodeURIComponent(songList[currentSongIndex].split('/').pop().replace('.mp3', '')); // Decode the URL
         updateAlbumArt(songList[currentSongIndex]);
     });
 
