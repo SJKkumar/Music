@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const songListPopup = document.getElementById('song-list-popup');
     const closePopupButton = document.getElementById('close-popup');
     const albumArt = document.getElementById('album-art');
+    const noAlbumArt = document.getElementById('no-album-art');
+    const songName = document.getElementById('song-name');
     const themeToggle = document.getElementById('theme-toggle');
 
     const apiURL = 'https://api.github.com/repos/SJKkumar/Music/contents/songs';
@@ -23,25 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(files => {
             files.forEach(file => {
-                if (file.name.endsWith('.mp3')) {
+                if (file.name.endsWith('.mp3')) { // Only add .mp3 files
                     const songItem = document.createElement('a');
                     songItem.href = file.download_url;
-                    songItem.textContent = file.name.replace('.mp3', '');
+                    songItem.textContent = file.name.replace('.mp3', ''); // Display name without the .mp3 extension
                     songItem.addEventListener('click', (e) => {
                         e.preventDefault();
                         audioPlayer.src = file.download_url;
                         audioPlayer.play();
                         playPauseButton.textContent = '⏸️';
                         currentSongIndex = songList.indexOf(file.download_url);
-                        updateAlbumArt(file.download_url);
+                        songName.textContent = file.name.replace('.mp3', '');
+                        updateAlbumArt(file.download_url); // Update album art if available
                     });
                     scrollableSongList.appendChild(songItem);
                     songList.push(file.download_url);
                 }
             });
 
+            // Set initial song
             if (songList.length > 0) {
                 audioPlayer.src = songList[0];
+                songName.textContent = songList[0].split('/').pop().replace('.mp3', '');
                 updateAlbumArt(songList[0]);
             }
         })
@@ -51,18 +56,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateAlbumArt(songUrl) {
         jsmediatags.read(songUrl, {
             onSuccess: function(tag) {
-                const tags = tag.tags;
-                if (tags.picture) {
-                    const picture = tags.picture;
+                const picture = tag.tags.picture;
+                if (picture) {
                     const base64String = arrayBufferToBase64(picture.data);
                     const imageUrl = `data:${picture.format};base64,${base64String}`;
                     albumArt.src = imageUrl;
+                    noAlbumArt.style.display = 'none';
                 } else {
                     albumArt.src = 'default-image.jpg';
+                    noAlbumArt.style.display = 'block';
                 }
             },
             onError: function() {
                 albumArt.src = 'default-image.jpg';
+                noAlbumArt.style.display = 'block';
             }
         });
     }
@@ -94,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.src = songList[currentSongIndex];
         audioPlayer.play();
         playPauseButton.textContent = '⏸️';
+        songName.textContent = songList[currentSongIndex].split('/').pop().replace('.mp3', '');
         updateAlbumArt(songList[currentSongIndex]);
     });
 
@@ -103,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.src = songList[currentSongIndex];
         audioPlayer.play();
         playPauseButton.textContent = '⏸️';
+        songName.textContent = songList[currentSongIndex].split('/').pop().replace('.mp3', '');
         updateAlbumArt(songList[currentSongIndex]);
     });
 
