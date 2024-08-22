@@ -24,7 +24,7 @@ h1 {
 
 .player {
     background-color: #333;
-    padding: 30px; /* Increase padding for overall space */
+    padding: 30px; /* Increased padding for overall space */
     border-radius: 15px;
     margin: 20px;
 }
@@ -126,10 +126,11 @@ h1 {
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 10; /* Ensure it is above other elements */
 }
 
 .search-input {
-    width: calc(100% - 20px);
+    width: calc(100% - 40px); /* Account for padding and margins */
     padding: 15px;
     margin: 15px auto; /* Centered and added margin */
     border: 2px solid #ff6600;
@@ -172,6 +173,7 @@ h1 {
     right: 20px;
     width: 300px;
     text-align: left;
+    z-index: 10; /* Ensure it is above other elements */
 }
 
 .close-btn {
@@ -191,10 +193,11 @@ h1 {
     color: white;
     border: none;
     padding: 15px;
-    font-size: 24px;
+    font-size: 18px; /* Adjusted size for box */
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 5px; /* Change from circle to square */
     position: absolute;
     top: 20px;
     left: 20px;
+    z-index: 10; /* Ensure it is above other elements */
 }
