@@ -51,4 +51,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Album Art
     function updateAlbumArt(songUrl) {
-        // This
+        // This is a placeholder. Replace with actual logic to fetch and set album art if available
+        albumArt.src = 'default-image.jpg'; // Placeholder image
+    }
+
+    // Play/Pause Button Toggle
+    playPauseButton.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playPauseButton.textContent = '⏸️';
+        } else {
+            audioPlayer.pause();
+            playPauseButton.textContent = '▶️';
+        }
+    });
+
+    // Previous Song
+    prevButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex > 0) ? currentSongIndex - 1 : songList.length - 1;
+        audioPlayer.src = songList[currentSongIndex];
+        audioPlayer.play();
+        playPauseButton.textContent = '⏸️';
+        updateAlbumArt(songList[currentSongIndex]);
+    });
+
+    // Next Song
+    nextButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex < songList.length - 1) ? currentSongIndex + 1 : 0;
+        audioPlayer.src = songList[currentSongIndex];
+        audioPlayer.play();
+        playPauseButton.textContent = '⏸️';
+        updateAlbumArt(songList[currentSongIndex]);
+    });
+
+    // Update Progress Bar
+    audioPlayer.addEventListener('timeupdate', () => {
+        if (audioPlayer.duration) {
+            const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progress.style.width = percent + '%';
+            progressBar.style.width = percent + '%';
+        }
+    });
+
+    // Seek Functionality
+    progressContainer.addEventListener('click', (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const width = rect.width;
+        const percent = (offsetX / width);
+        const newTime = percent * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    });
+
+    // Volume Control
+    volumeControl.addEventListener('input', () => {
+        audioPlayer.volume = volumeControl.value;
+    });
+
+    // Show/Hide Song List Popup
+    menuButton.addEventListener('click', () => {
+        songListPopup.style.display = songListPopup.style.display === 'none' ? 'block' : 'none';
+    });
+
+    closePopupButton.addEventListener('click', () => {
+        songListPopup.style.display = 'none';
+    });
+
+    // Handle Audio End
+    audioPlayer.addEventListener('ended', () => {
+        nextButton.click(); // Automatically play next song when the current song ends
+    });
+
+    // Theme Toggle
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        const isLightTheme = document.body.classList.contains('light-theme');
+        themeToggle.textContent = isLightTheme ? '🌙' : '☀️';
+    });
+
+    // Initialize volume control
+    volumeControl.value = audioPlayer.volume;
+});
