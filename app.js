@@ -76,6 +76,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Seek Functionality
+        // Seek Functionality
     progressContainer.addEventListener('click', (e) => {
-        const rect = progress
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const width = rect.width;
+        const percent = (offsetX / width);
+        const newTime = percent * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    });
+
+    // Volume Control
+    volumeControl.addEventListener('input', () => {
+        audioPlayer.volume = volumeControl.value;
+    });
+
+    // Song Selection
+    songSelector.addEventListener('change', (e) => {
+        const selectedSong = e.target.value;
+        if (selectedSong) {
+            audioPlayer.src = selectedSong;
+            audioPlayer.play();
+            playPauseButton.textContent = '⏸️';
+            currentSongIndex = songList.indexOf(selectedSong);
+        }
+    });
+
+    // Show/Hide Song List Popup
+    menuButton.addEventListener('click', () => {
+        songListPopup.style.display = songListPopup.style.display === 'none' ? 'block' : 'none';
+    });
+
+    closePopupButton.addEventListener('click', () => {
+        songListPopup.style.display = 'none';
+    });
+
+    // Handle Audio End
+    audioPlayer.addEventListener('ended', () => {
+        nextButton.click(); // Automatically play next song when the current song ends
+    });
+
+    // Initialize volume control
+    volumeControl.value = audioPlayer.volume;
+});
