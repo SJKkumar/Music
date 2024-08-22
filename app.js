@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const albumArt = document.getElementById('album-art');
     const themeToggle = document.getElementById('theme-toggle');
 
-    // GitHub API URL to fetch the list of files in the 'songs' directory
     const apiURL = 'https://api.github.com/repos/SJKkumar/Music/contents/songs';
     let songList = [];
     let currentSongIndex = 0;
@@ -24,24 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(files => {
             files.forEach(file => {
-                if (file.name.endsWith('.mp3')) { // Only add .mp3 files
+                if (file.name.endsWith('.mp3')) {
                     const songItem = document.createElement('a');
                     songItem.href = file.download_url;
-                    songItem.textContent = file.name.replace('.mp3', ''); // Display name without the .mp3 extension
+                    songItem.textContent = file.name.replace('.mp3', '');
                     songItem.addEventListener('click', (e) => {
                         e.preventDefault();
                         audioPlayer.src = file.download_url;
                         audioPlayer.play();
                         playPauseButton.textContent = '⏸️';
                         currentSongIndex = songList.indexOf(file.download_url);
-                        updateAlbumArt(file.download_url); // Update album art if available
+                        updateAlbumArt(file.download_url);
                     });
                     scrollableSongList.appendChild(songItem);
                     songList.push(file.download_url);
                 }
             });
 
-            // Set initial song
             if (songList.length > 0) {
                 audioPlayer.src = songList[0];
                 updateAlbumArt(songList[0]);
@@ -51,12 +49,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Album Art
     function updateAlbumArt(songUrl) {
-        // Logic to fetch album art can go here. For now, use a placeholder.
-        albumArt.src = 'default-image.jpg'; // Placeholder image for unavailable album art
+        jsmediatags.read(songUrl, {
+            onSuccess: function(tag) {
+                const tags = tag.tags;
+                if (tags.picture) {
+                    const picture = tags.picture;
+                    const base64String = arrayBufferToBase64(picture.data);
+                    const imageUrl = `data:${picture.format};base64,${base64String}`;
+                    albumArt.src = imageUrl;
+                } else {
+                    albumArt.src = 'default-image.jpg';
+                }
+            },
+            onError: function() {
+                albumArt.src = 'default-image.jpg';
+            }
+        });
+    }
 
-        // If you want to simulate actual album art fetching:
-        // For example, you can use a dummy URL or actual logic to fetch the art.
-        // Here we're just using a static default image.
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        let bytes = new Uint8Array(buffer);
+        let len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
     }
 
     // Play/Pause Button Toggle
