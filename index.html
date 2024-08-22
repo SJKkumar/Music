@@ -10,7 +10,13 @@
     <div class="container">
         <button id="theme-toggle" class="theme-btn">🌙</button>
         <div class="player">
-            <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
+            <div class="album-art-container">
+                <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
+                <div id="no-album-art" class="no-album-art">No Album Art</div>
+            </div>
+            <div class="song-info">
+                <h2 id="song-name">No Song Playing</h2>
+            </div>
             <div class="controls">
                 <button id="prev" class="control-btn">⏮️</button>
                 <button id="play-pause" class="control-btn play-pulse">▶️</button>
