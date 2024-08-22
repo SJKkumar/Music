@@ -12,28 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const songListPopup = document.getElementById('song-list-popup');
     const closePopupButton = document.getElementById('close-popup');
     const albumArt = document.getElementById('album-art');
-    const lyricsContainer = document.getElementById('lyrics-container');
-    const lyricsText = document.getElementById('lyrics-text');
     const themeToggle = document.getElementById('theme-toggle');
-    const themeOptions = document.querySelectorAll('.theme-option');
-    const playlistButton = document.getElementById('create-playlist');
-    const playlistContainer = document.getElementById('playlist-container');
     const searchInput = document.getElementById('search-input');
 
     const apiURL = 'https://api.github.com/repos/SJKkumar/Music/contents/songs';
     let songList = [];
     let displayedSongs = [];
     let currentSongIndex = 0;
-    let playlists = {};
 
     fetch(apiURL)
         .then(response => response.json())
         .then(files => {
             files.forEach(file => {
                 if (file.name.endsWith('.mp3')) {
-                    const songItem = createSongItem(file.download_url, decodeSongName(file.name));
+                    const songTitle = decodeURIComponent(file.name.replace('.mp3', ''));
+                    const songItem = createSongItem(file.download_url, songTitle);
                     scrollableSongList.appendChild(songItem);
-                    songList.push({ url: file.download_url, title: decodeSongName(file.name) });
+                    songList.push({ url: file.download_url, title: songTitle });
                 }
             });
             displayedSongs = [...songList];
@@ -42,10 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(error => console.error('Error fetching song list:', error));
-
-    function decodeSongName(name) {
-        return decodeURIComponent(name.replace('.mp3', ''));
-    }
 
     function createSongItem(url, title) {
         const songItem = document.createElement('a');
@@ -63,21 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.play();
         playPauseButton.textContent = '⏸️';
         albumArt.src = 'default-image.jpg'; // Placeholder for album art
-        lyricsText.textContent = 'Fetching lyrics...'; // Placeholder for lyrics
-        fetchLyrics(songTitle);
     }
 
-    function fetchLyrics(songTitle) {
-        const lyricsAPI = `https://api.lyrics.ovh/v1/Artist/${encodeURIComponent(songTitle)}`;
-        fetch(lyricsAPI)
-            .then(response => response.json())
-            .then(data => {
-                lyricsText.textContent = data.lyrics || 'No lyrics available';
-            })
-            .catch(() => {
-                lyricsText.textContent = 'No lyrics available';
-            });
+    function refreshSongList() {
+        scrollableSongList.innerHTML = '';
+        displayedSongs.forEach(song => {
+            scrollableSongList.appendChild(createSongItem(song.url, song.title));
+        });
     }
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        displayedSongs = songList.filter(song => song.title.toLowerCase().includes(query));
+        refreshSongList();
+    });
 
     playPauseButton.addEventListener('click', () => {
         if (audioPlayer.paused) {
@@ -128,36 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         songListPopup.style.display = 'none';
     });
 
-    playlistButton.addEventListener('click', () => {
-        const playlistName = prompt('Enter playlist name:');
-        if (playlistName) {
-            createPlaylist(playlistName);
-            const playlistItem = document.createElement('div');
-            playlistItem.textContent = playlistName;
-            playlistItem.className = 'playlist-item';
-            playlistContainer.appendChild(playlistItem);
-        }
-    });
-
-    function createPlaylist(name) {
-        playlists[name] = [];
-    }
-
-    function addToPlaylist(playlistName, songUrl) {
-        if (playlists[playlistName]) {
-            playlists[playlistName].push(songUrl);
-        }
-    }
-
-    function loadPlaylist(playlistName) {
-        if (playlists[playlistName]) {
-            currentSongIndex = 0;
-            audioPlayer.src = playlists[playlistName][currentSongIndex];
-            audioPlayer.play();
-            playPauseButton.textContent = '⏸️';
-        }
-    }
-
     audioPlayer.addEventListener('ended', () => {
         nextButton.click();
     });
@@ -168,25 +128,5 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle.textContent = isLightTheme ? '🌙' : '☀️';
     });
 
-    themeOptions.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const theme = e.target.getAttribute('data-theme');
-            document.body.className = theme === 'dark' ? '' : 'light-theme';
-        });
-    });
-
     volumeControl.value = audioPlayer.volume;
-
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        displayedSongs = songList.filter(song => song.title.toLowerCase().includes(query));
-        refreshSongList();
-    });
-
-    function refreshSongList() {
-        scrollableSongList.innerHTML = '';
-        displayedSongs.forEach(song => {
-            scrollableSongList.appendChild(createSongItem(song.url, song.title));
-        });
-    }
 });
