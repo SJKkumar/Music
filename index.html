@@ -10,20 +10,22 @@
     <div class="container">
         <h1>Custom Music Player</h1>
         <div class="player">
+            <select id="song-selector">
+                <option value="Makkamishi.mp3">Makkamishi</option>
+                <option value="Aasa Kooda.mp3">Aasa Kooda</option>
+                <!-- Add more options for additional songs here -->
+            </select>
             <button id="play-pause">Play</button>
             <div class="progress-container">
                 <div id="progress-bar" class="progress-bar"></div>
                 <div id="progress" class="progress"></div>
             </div>
             <audio id="audio-player" src="https://raw.githubusercontent.com/SJKkumar/Music/main/songs/Makkamishi.mp3"></audio>
-            <audio id="audio-player" src="https://raw.githubusercontent.com/SJKkumar/Music/main/songs/Aasa Kooda.mp3"></audio>
-
         </div>
         <div class="volume-container">
-    <label for="volume">Volume:</label>
-    <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
-</div>
-
+            <label for="volume">Volume:</label>
+            <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
