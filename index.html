@@ -9,12 +9,14 @@
 <body>
     <div class="container">
         <button id="theme-toggle" class="theme-btn">🌙</button>
-        <div class="theme-selector">
-            <button class="theme-option" data-theme="dark">Dark</button>
-            <button class="theme-option" data-theme="light">Light</button>
-        </div>
         <div class="player">
-            <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
+            <div class="album-art-container">
+                <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
+                <div id="no-album-art" class="no-album-art">No Album Art</div>
+            </div>
+            <div class="song-info">
+                <h2 id="song-name">No Song Playing</h2>
+            </div>
             <div class="controls">
                 <button id="prev" class="control-btn">⏮️</button>
                 <button id="play-pause" class="control-btn play-pulse">▶️</button>
@@ -25,10 +27,6 @@
                 <div id="progress" class="progress"></div>
             </div>
             <audio id="audio-player" src=""></audio>
-            <div id="lyrics-container" class="lyrics-container">
-                <h2>Lyrics:</h2>
-                <pre id="lyrics-text">No lyrics available</pre>
-            </div>
         </div>
         <div class="volume-container">
             <label for="volume">Volume:</label>
@@ -38,10 +36,9 @@
         <div id="song-list-popup" class="popup">
             <button id="close-popup" class="close-btn">✖</button>
             <div id="scrollable-song-list" class="scrollable-list"></div>
-            <button id="create-playlist" class="playlist-btn">Create Playlist</button>
-            <div id="playlist-container" class="playlist-container"></div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.2/jsmediatags.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
