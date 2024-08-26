@@ -39,9 +39,10 @@ body {
 }
 
 .song-title {
-    font-size: 24px;
+    font-size: 28px; /* Increased font size */
     color: #ff6600;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .controls {
@@ -241,6 +242,10 @@ body {
 
 .light-theme .player {
     background-color: #fff;
+}
+
+.light-theme .song-title {
+    color: #ff6600;
 }
 
 .light-theme .scrollable-list a {
