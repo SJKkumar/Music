@@ -21,9 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const playlistSearchInput = document.getElementById('playlist-search-input');
     const lyricsContent = document.getElementById('lyrics-content');
     const songInfo = document.getElementById('song-info');
-
+    const customPlaylistContainer = document.getElementById('custom-playlist-container');
+    const customPlaylist = document.getElementById('custom-playlist');
+    
     let songList = [];
     let playlistArray = [];
+    let customPlaylistArray = [];
     let currentSongIndex = 0;
 
     // Fetch songs from the provided API
@@ -77,6 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update playlist display
     function updatePlaylist() {
         playlist.innerHTML = playlistArray.map(song => `
+            <div class="playlist-item">${song}</div>
+        `).join('');
+    }
+
+    // Update custom playlist display
+    function updateCustomPlaylist() {
+        customPlaylist.innerHTML = customPlaylistArray.map(song => `
             <div class="playlist-item">${song}</div>
         `).join('');
     }
@@ -155,6 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
         playlistPopup.style.display = 'none';
     });
 
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        themeToggle.textContent = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
+    });
+
     searchInput.addEventListener('input', () => {
         filterSongs(searchInput.value);
     });
@@ -171,7 +186,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Example function call to add song to playlist
-    // You would need to hook this up to an actual UI event for adding songs to the playlist
-    // addToPlaylist('Example Song Title');
+    // Add song to custom playlist
+    function addToCustomPlaylist(songTitle) {
+        if (!customPlaylistArray.includes(songTitle)) {
+            customPlaylistArray.push(songTitle);
+            updateCustomPlaylist();
+        }
+    }
+
+    // Example function call to add song to custom playlist
+    // Hook this up to an actual UI event for adding songs to the custom playlist
+    function addSongToCustomPlaylist(songTitle) {
+        addToCustomPlaylist(songTitle);
+        updateSong(songList.find(song => song.title === songTitle).url, songTitle);
+    }
+
+    // Hook up the function to add a song to the custom playlist (for example, by adding a button in the song list item)
+    // Example:
+    // document.querySelectorAll('.song-item').forEach(item => {
+    //     item.addEventListener('click', () => {
+    //         addSongToCustomPlaylist(item.textContent);
+    //     });
+    // });
 });
