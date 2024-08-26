@@ -10,6 +10,7 @@
     <div class="container">
         <button id="theme-toggle" class="theme-btn">🌙</button>
         <button id="menu-button" class="menu-btn">☰</button>
+        <button id="playlist-button" class="playlist-btn">🎵</button>
         <div class="player">
             <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
             <div class="controls">
@@ -22,6 +23,7 @@
                 <div id="progress" class="progress"></div>
             </div>
             <audio id="audio-player" src=""></audio>
+            <div id="song-info" class="song-info">No song playing</div>
         </div>
         <div class="volume-container">
             <label for="volume">Volume:</label>
@@ -31,11 +33,11 @@
             <button id="close-popup" class="close-btn">✖</button>
             <input id="search-input" type="text" placeholder="Search songs" class="search-input">
             <div id="scrollable-song-list" class="scrollable-list"></div>
-            <button id="add-to-playlist" class="playlist-btn">Add to Playlist</button>
         </div>
         <div id="playlist-popup" class="popup">
             <button id="close-playlist-popup" class="close-btn">✖</button>
             <h2>Playlist</h2>
+            <input id="playlist-search-input" type="text" placeholder="Search playlist" class="search-input">
             <div id="playlist" class="scrollable-list"></div>
         </div>
         <div id="lyrics-section" class="lyrics-section">
