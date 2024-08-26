@@ -13,49 +13,45 @@ body {
 .container {
     text-align: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 700px; /* Increased width for more space */
     position: relative;
-}
-
-h1 {
-    margin-bottom: 20px;
-    font-size: 28px;
 }
 
 .player {
     background-color: #333;
-    padding: 30px; /* Increased padding for overall space */
+    padding: 30px;
     border-radius: 15px;
     margin: 20px;
+    position: relative;
 }
 
 .album-art {
     width: 100%;
-    max-width: 300px;
-    height: 300px; /* Set fixed height to maintain aspect ratio */
-    margin: 0 auto 30px; /* Center the image and add more bottom margin */
+    max-width: 350px;
+    height: 350px;
+    margin: 0 auto 20px;
     border-radius: 15px;
-    border: 5px solid #ff6600; /* Border color matching the theme */
-    object-fit: cover; /* Ensure the image covers the area */
+    border: 5px solid #ff6600;
+    object-fit: cover;
 }
 
 .controls {
     display: flex;
-    justify-content: space-around; /* Distribute space evenly between controls */
+    justify-content: space-around;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .control-btn {
     background-color: #ff6600;
     color: white;
     border: none;
-    padding: 15px; /* Increased padding for more space around text */
+    padding: 15px;
     font-size: 24px;
     cursor: pointer;
     border-radius: 50%;
-    width: 70px; /* Increased size */
-    height: 70px; /* Increased size */
+    width: 80px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,12 +77,12 @@ h1 {
 .progress-container {
     position: relative;
     width: 100%;
-    height: 8px;
+    height: 10px; /* Increased height for better visibility */
     background-color: #444;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 30px;
-    padding: 5px; /* Added padding to ensure progress bar doesn't touch container edges */
+    margin-bottom: 20px;
+    padding: 5px;
 }
 
 .progress-bar {
@@ -107,32 +103,45 @@ h1 {
 }
 
 .volume-container {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 #volume {
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
 }
 
-.menu-btn {
+.menu-btn, .theme-btn, .playlist-btn {
     background-color: #ff6600;
     color: white;
     border: none;
-    padding: 15px 30px; /* Increased padding for more space */
-    font-size: 20px;
+    padding: 15px;
+    font-size: 18px;
     cursor: pointer;
     border-radius: 5px;
     position: absolute;
+    z-index: 10;
+}
+
+.menu-btn {
     top: 20px;
     right: 20px;
-    z-index: 10; /* Ensure it is above other elements */
+}
+
+.theme-btn {
+    top: 20px;
+    left: 20px;
+}
+
+.playlist-btn {
+    position: relative;
+    margin-top: 15px;
 }
 
 .search-input {
-    width: calc(100% - 40px); /* Account for padding and margins */
+    width: calc(100% - 40px);
     padding: 15px;
-    margin: 15px auto; /* Centered and added margin */
+    margin: 15px auto;
     border: 2px solid #ff6600;
     border-radius: 5px;
     background-color: #222;
@@ -147,7 +156,7 @@ h1 {
 .scrollable-list {
     max-height: 250px;
     overflow-y: auto;
-    padding: 0 10px; /* Added padding to ensure items do not touch edges */
+    padding: 0 10px;
 }
 
 .scrollable-list a {
@@ -166,14 +175,14 @@ h1 {
 .popup {
     display: none;
     background-color: #333;
-    padding: 30px;
+    padding: 20px;
     border-radius: 15px;
     position: absolute;
     top: 50px;
     right: 20px;
     width: 300px;
     text-align: left;
-    z-index: 10; /* Ensure it is above other elements */
+    z-index: 10;
 }
 
 .close-btn {
@@ -188,16 +197,49 @@ h1 {
     right: -20px;
 }
 
-.theme-btn {
+.lyrics-section {
+    margin-top: 30px;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    text-align: left;
+}
+
+.lyrics-section h2 {
+    margin-top: 0;
+}
+
+.light-theme {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.light-theme .player {
+    background-color: #e0e0e0;
+}
+
+.light-theme .album-art {
+    border-color: #ff6600;
+}
+
+.light-theme .progress-bar {
     background-color: #ff6600;
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 18px; /* Adjusted size for box */
-    cursor: pointer;
-    border-radius: 5px; /* Change from circle to square */
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 10; /* Ensure it is above other elements */
+}
+
+.light-theme .control-btn {
+    background-color: #ff6600;
+}
+
+.light-theme .menu-btn, .light-theme .theme-btn, .light-theme .playlist-btn {
+    background-color: #ff6600;
+}
+
+.light-theme .search-input {
+    background-color: #ddd;
+    border-color: #ff6600;
+}
+
+.light-theme .popup {
+    background-color: #e0e0e0;
 }
