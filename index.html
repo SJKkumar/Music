@@ -7,48 +7,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="main-container">
-        <div id="playlist-container" class="playlist-container">
-            <div id="custom-playlist-container" class="custom-playlist-container">
-                <h2>My Playlist</h2>
-                <div id="custom-playlist" class="scrollable-list"></div>
+    <header class="top-bar">
+        <button class="hamburger-menu">☰</button>
+        <input type="search" placeholder="Search by artists, songs or albums">
+        <button class="my-channel-btn">My channel</button>
+    </header>
+
+    <div class="container">
+        <h1>Custom Music Player</h1>
+        <div class="player">
+            <button id="prev" class="round-button">⏮️</button>
+            <button id="play-pause" class="round-button">▶️</button>
+            <button id="next" class="round-button">⏭️</button>
+            <div class="progress-container">
+                <input id="progress-bar" type="range" min="0" max="100" value="0" class="progress-bar">
+            </div>
+            <div class="volume-container">
+                <label for="volume">Volume:</label>
+                <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
             </div>
         </div>
-        <div class="container">
-            <button id="theme-toggle" class="theme-btn">🌙</button>
-            <button id="menu-button" class="menu-btn">☰</button>
-            <button id="playlist-button" class="playlist-btn">🎵</button>
-            <div class="player">
-                <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
-                <div class="song-title" id="song-info">No song playing</div>
-                <div class="controls">
-                    <button id="prev" class="control-btn">⏮️</button>
-                    <button id="play-pause" class="control-btn play-pulse">▶️</button>
-                    <button id="next" class="control-btn">⏭️</button>
-                </div>
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-bar"></div>
-                    <div id="progress" class="progress"></div>
-                </div>
-                <audio id="audio-player" src=""></audio>
-                <div class="volume-container">
-                    <label for="volume">Volume:</label>
-                    <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
-                </div>
-            </div>
-        </div>
-        <div id="song-list-popup" class="popup">
-            <button id="close-popup" class="close-btn">✖</button>
-            <input id="search-input" type="text" placeholder="Search songs" class="search-input">
-            <div id="scrollable-song-list" class="scrollable-list"></div>
-        </div>
-        <div id="playlist-popup" class="popup playlist-popup">
-            <button id="close-playlist-popup" class="close-btn">✖</button>
-            <h2>Playlist</h2>
-            <input id="playlist-search-input" type="text" placeholder="Search playlist" class="search-input">
-            <div id="playlist" class="scrollable-list"></div>
+
+        <!-- Playlist Pop-Up -->
+        <div id="playlist-popup" class="playlist-popup hidden">
+            <h3>Your Playlist</h3>
+            <ul id="playlist">
+                <!-- Songs will be dynamically added here -->
+            </ul>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
