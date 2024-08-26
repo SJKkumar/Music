@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         <button id="theme-toggle" class="theme-btn">🌙</button>
+        <button id="menu-button" class="menu-btn">☰</button>
         <div class="player">
             <img id="album-art" src="default-image.jpg" alt="Album Art" class="album-art">
             <div class="controls">
@@ -26,11 +27,20 @@
             <label for="volume">Volume:</label>
             <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
         </div>
-        <button id="menu-button" class="menu-btn">☰</button>
         <div id="song-list-popup" class="popup">
             <button id="close-popup" class="close-btn">✖</button>
             <input id="search-input" type="text" placeholder="Search songs" class="search-input">
             <div id="scrollable-song-list" class="scrollable-list"></div>
+            <button id="add-to-playlist" class="playlist-btn">Add to Playlist</button>
+        </div>
+        <div id="playlist-popup" class="popup">
+            <button id="close-playlist-popup" class="close-btn">✖</button>
+            <h2>Playlist</h2>
+            <div id="playlist" class="scrollable-list"></div>
+        </div>
+        <div id="lyrics-section" class="lyrics-section">
+            <h2>Lyrics</h2>
+            <p id="lyrics-content">Lyrics will appear here...</p>
         </div>
     </div>
     <script src="app.js"></script>
