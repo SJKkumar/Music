@@ -11,9 +11,9 @@ body {
 }
 
 .container {
-    text-align: center;
-    width: 100%;
-    max-width: 700px; /* Increased width for more space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
 }
 
@@ -23,21 +23,30 @@ body {
     border-radius: 15px;
     margin: 20px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .album-art {
     width: 100%;
     max-width: 350px;
     height: 350px;
-    margin: 0 auto 20px;
+    margin-bottom: 20px;
     border-radius: 15px;
     border: 5px solid #ff6600;
     object-fit: cover;
 }
 
+.song-title {
+    font-size: 24px;
+    color: #ff6600;
+    margin-bottom: 20px;
+}
+
 .controls {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -77,7 +86,7 @@ body {
 .progress-container {
     position: relative;
     width: 100%;
-    height: 10px; /* Increased height for better visibility */
+    height: 10px;
     background-color: #444;
     border-radius: 5px;
     cursor: pointer;
@@ -119,8 +128,8 @@ body {
     font-size: 18px;
     cursor: pointer;
     border-radius: 5px;
-    width: 60px; /* Same size for all buttons */
-    height: 60px; /* Same size for all buttons */
+    width: 60px;
+    height: 60px;
     position: absolute;
     z-index: 10;
 }
@@ -180,11 +189,16 @@ body {
     padding: 20px;
     border-radius: 15px;
     position: absolute;
-    top: 80px; /* Adjusted for better placement */
+    top: 80px;
     right: 20px;
     width: 300px;
     text-align: left;
     z-index: 10;
+}
+
+.playlist-popup {
+    top: 20px;
+    right: 20px;
 }
 
 .close-btn {
@@ -199,17 +213,25 @@ body {
     right: -20px;
 }
 
-.lyrics-section {
-    margin-top: 30px;
-    background-color: #222;
-    padding: 20px;
-    border-radius: 10px;
+.custom-playlist-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    background-color: #333;
+    border-radius: 15px;
+    padding: 10px;
     color: #fff;
-    text-align: left;
+    box-shadow: 0 0 12px rgba(255, 102, 0, 0.7);
 }
 
-.lyrics-section h2 {
-    margin-top: 0;
+.custom-playlist-container h2 {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.custom-playlist-container .scrollable-list {
+    max-height: 300px;
 }
 
 .light-theme {
@@ -218,30 +240,14 @@ body {
 }
 
 .light-theme .player {
-    background-color: #e0e0e0;
+    background-color: #fff;
 }
 
-.light-theme .album-art {
-    border-color: #ff6600;
-}
-
-.light-theme .progress-bar {
-    background-color: #ff6600;
-}
-
-.light-theme .control-btn {
-    background-color: #ff6600;
-}
-
-.light-theme .menu-btn, .light-theme .theme-btn, .light-theme .playlist-btn {
-    background-color: #ff6600;
+.light-theme .scrollable-list a {
+    color: #000;
+    border-bottom: 1px solid #ddd;
 }
 
 .light-theme .search-input {
-    background-color: #ddd;
     border-color: #ff6600;
-}
-
-.light-theme .popup {
-    background-color: #e0e0e0;
 }
