@@ -1,84 +1,89 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const audioPlayer = new Audio();
-    const playButton = document.getElementById('play');
-    const nextButton = document.getElementById('next');
-    const prevButton = document.getElementById('prev');
-    const progressBar = document.getElementById('progress-bar');
-    const playlistElement = document.getElementById('playlist');
-    const titleElement = document.getElementById('title');
-    const artistElement = document.getElementById('artist');
-    const coverElement = document.getElementById('cover');
+    const audio = new Audio();
+    let songIndex = 0;
 
-    let currentSongIndex = 0;
-    let songs = [
-        { title: 'Song 1', artist: 'Artist 1', src: 'songs/song1.mp3', cover: 'covers/cover1.jpg' },
-        { title: 'Song 2', artist: 'Artist 2', src: 'songs/song2.mp3', cover: 'covers/cover2.jpg' },
-        { title: 'Song 3', artist: 'Artist 3', src: 'songs/song3.mp3', cover: 'covers/cover3.jpg' },
+    const songs = [
+        // Will be populated dynamically
     ];
 
-    function loadSong(song) {
-        audioPlayer.src = song.src;
-        titleElement.textContent = song.title;
-        artistElement.textContent = song.artist;
-        coverElement.src = song.cover;
-    }
+    const songListElement = document.getElementById('song-list');
+    const songNameElement = document.getElementById('song-name');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeElement = document.getElementById('current-time');
+    const durationElement = document.getElementById('duration');
 
-    function playSong() {
-        audioPlayer.play();
-        playButton.innerHTML = '<i class="fas fa-pause"></i>Pause';
-    }
+    // Fetch songs from GitHub repository
+    fetchSongs();
 
-    function pauseSong() {
-        audioPlayer.pause();
-        playButton.innerHTML = '<i class="fas fa-play"></i>Play';
-    }
-
-    function nextSong() {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
-        loadSong(songs[currentSongIndex]);
-        playSong();
-    }
-
-    function prevSong() {
-        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        loadSong(songs[currentSongIndex]);
-        playSong();
-    }
-
-    function renderPlaylist() {
-        songs.forEach((song, index) => {
-            const li = document.createElement('li');
-            li.textContent = `${song.title} - ${song.artist}`;
-            li.addEventListener('click', () => {
-                currentSongIndex = index;
-                loadSong(song);
-                playSong();
+    function fetchSongs() {
+        fetch('https://api.github.com/repos/SJKkumar/Music/contents/songs')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach((file, index) => {
+                    if (file.name.endsWith('.mp3')) {
+                        songs.push(file.download_url);
+                        const li = document.createElement('li');
+                        li.textContent = file.name.replace('.mp3', '');
+                        li.addEventListener('click', () => loadSong(index));
+                        songListElement.appendChild(li);
+                    }
+                });
+                loadSong(songIndex);
             });
-            playlistElement.appendChild(li);
-        });
     }
 
-    playButton.addEventListener('click', () => {
-        if (audioPlayer.paused) {
-            playSong();
+    function loadSong(index) {
+        songIndex = index;
+        audio.src = songs[songIndex];
+        songNameElement.textContent = songListElement.children[songIndex].textContent;
+        playPauseBtn.innerHTML = '&#9658;';
+        audio.play();
+        updateProgress();
+    }
+
+    function updateProgress() {
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTimeElement.textContent = formatTime(audio.currentTime);
+        durationElement.textContent = formatTime(audio.duration);
+
+        if (!audio.paused) {
+            requestAnimationFrame(updateProgress);
+        }
+    }
+
+    function formatTime(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.innerHTML = '&#10074;&#10074;';
         } else {
-            pauseSong();
+            audio.pause();
+            playPauseBtn.innerHTML = '&#9658;';
         }
     });
 
-    nextButton.addEventListener('click', nextSong);
-    prevButton.addEventListener('click', prevSong);
-
-    audioPlayer.addEventListener('timeupdate', () => {
-        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progressBar.value = progressPercent;
+    prevBtn.addEventListener('click', () => {
+        songIndex = (songIndex > 0) ? songIndex - 1 : songs.length - 1;
+        loadSong(songIndex);
     });
+
+    nextBtn.addEventListener('click', () => {
+        songIndex = (songIndex < songs.length - 1) ? songIndex + 1 : 0;
+        loadSong(songIndex);
+    });
+
+    audio.addEventListener('timeupdate', updateProgress);
 
     progressBar.addEventListener('input', () => {
-        const newTime = (progressBar.value / 100) * audioPlayer.duration;
-        audioPlayer.currentTime = newTime;
+        audio.currentTime = (progressBar.value / 100) * audio.duration;
+        updateProgress();
     });
-
-    loadSong(songs[currentSongIndex]);
-    renderPlaylist();
 });
