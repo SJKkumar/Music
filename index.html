@@ -3,71 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Music Player</title>
+    <title>Custom Music Player</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header class="top-bar">
-        <button class="hamburger-menu">☰</button>
-        <input type="search" placeholder="Search by artists, songs or albums" class="search-bar">
-        <button class="my-channel-btn">My Channel</button>
-    </header>
-
-    <div class="main-content">
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <li>Feed</li>
-                    <li>Playlists</li>
-                    <li>Favorites</li>
-                    <li>Listen Later</li>
-                    <li>History</li>
-                    <li>Podcasts</li>
-                </ul>
-            </nav>
-        </aside>
-
-        <section class="player-section">
-            <div class="player">
-                <div class="controls">
-                    <button id="prev" class="round-button">⏮️</button>
-                    <button id="play-pause" class="round-button">▶️</button>
-                    <button id="next" class="round-button">⏭️</button>
-                </div>
-                <div class="progress-container">
-                    <input id="progress-bar" type="range" min="0" max="100" value="0" class="progress-bar">
-                </div>
-                <div class="volume-container">
-                    <label for="volume">Volume:</label>
-                    <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
-                </div>
+    <div class="container">
+        <header>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
             </div>
-            <div class="playlist-container">
-                <ul id="playlist">
-                    <!-- Songs will be dynamically added here -->
-                </ul>
+            <h1>Music Player</h1>
+        </header>
+        
+        <div class="player">
+            <div class="cover">
+                <img id="cover-image" src="cover-placeholder.jpg" alt="Album Cover">
             </div>
-        </section>
+            <div class="info">
+                <h2 id="song-title">Song Title</h2>
+                <p id="song-artist">Artist</p>
+            </div>
+            <div class="controls">
+                <button id="prev"><i class="fas fa-backward"></i></button>
+                <button id="play-pause"><i class="fas fa-play"></i></button>
+                <button id="next"><i class="fas fa-forward"></i></button>
+            </div>
+            <input type="range" id="progress-bar" value="0" max="100">
+            <input type="range" id="volume" value="1" min="0" max="1" step="0.01">
+        </div>
+        
+        <div class="footer-player">
+            <div class="footer-controls">
+                <button id="prev-footer"><i class="fas fa-backward"></i></button>
+                <button id="play-pause-footer"><i class="fas fa-play"></i></button>
+                <button id="next-footer"><i class="fas fa-forward"></i></button>
+            </div>
+            <input type="range" id="progress-bar-footer" value="0" max="100">
+            <input type="range" id="volume-footer" value="1" min="0" max="1" step="0.01">
+        </div>
+
+        <ul id="playlist" class="playlist"></ul>
     </div>
 
-    <footer class="footer-player">
-        <div class="now-playing">
-            <img src="album-art.jpg" alt="Album Art" class="album-art">
-            <div class="song-info">
-                <p id="song-title">Song Title</p>
-                <p id="song-artist">Artist Name</p>
-            </div>
-        </div>
-        <div class="footer-controls">
-            <button id="prev-footer" class="round-button">⏮️</button>
-            <button id="play-pause-footer" class="round-button">▶️</button>
-            <button id="next-footer" class="round-button">⏭️</button>
-            <input id="progress-bar-footer" type="range" min="0" max="100" value="0" class="progress-bar">
-        </div>
-        <div class="volume-control">
-            <input id="volume-footer" type="range" min="0" max="1" step="0.01" value="1">
-        </div>
-    </footer>
+    <div class="sidebar" id="sidebar">
+        <ul id="sidebar-playlist"></ul>
+    </div>
 
     <script src="app.js"></script>
 </body>
