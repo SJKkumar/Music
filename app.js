@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const audioPlayer = new Audio();
     const playPauseButton = document.getElementById('play-pause');
     const nextButton = document.getElementById('next');
@@ -16,19 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const songArtistElement = document.getElementById('song-artist');
 
     let currentSongIndex = 0;
+    let songs = [];
 
-    const songs = [
-        {
-            title: 'Makkamishi',
-            artist: 'Artist Name',
-            src: 'https://raw.githubusercontent.com/SJKkumar/Music/main/songs/Makkamishi.mp3'
-        },
-        {
-            title: 'Aasa Kooda',
-            artist: 'Artist Name',
-            src: 'https://raw.githubusercontent.com/SJKkumar/Music/main/songs/Aasa%20Kooda.mp3'
-        }
-    ];
+    // GitHub API to fetch the list of songs
+    const repoOwner = "SJKkumar";
+    const repoName = "Music";
+    const directoryPath = "songs";
+
+    async function fetchSongs() {
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${directoryPath}`);
+        const files = await response.json();
+        return files
+            .filter(file => file.name.endsWith('.mp3'))
+            .map(file => ({
+                title: file.name.replace('.mp3', ''),
+                artist: 'Unknown Artist', // Default artist name, you can customize it
+                src: file.download_url
+            }));
+    }
+
+    async function loadSongs() {
+        songs = await fetchSongs();
+        loadSong(songs[currentSongIndex]);
+        renderPlaylist();
+    }
 
     function loadSong(song) {
         audioPlayer.src = song.src;
@@ -58,6 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
         loadSong(songs[currentSongIndex]);
         playSong();
+    }
+
+    function renderPlaylist() {
+        playlistElement.innerHTML = ''; // Clear existing playlist
+        songs.forEach((song, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${song.title} - ${song.artist}`;
+            li.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(song);
+                playSong();
+            });
+            playlistElement.appendChild(li);
+        });
     }
 
     playPauseButton.addEventListener('click', () => {
@@ -108,17 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         volumeControl.value = volumeFooterControl.value;
     });
 
-    loadSong(songs[currentSongIndex]);
-
-    // Dynamically add songs to the playlist
-    songs.forEach((song, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${song.title} - ${song.artist}`;
-        li.addEventListener('click', () => {
-            currentSongIndex = index;
-            loadSong(song);
-            playSong();
-        });
-        playlistElement.appendChild(li);
-    });
+    // Load songs when the page is loaded
+    loadSongs();
 });
