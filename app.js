@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const progressBar = document.getElementById('progress-bar');
     const volumeControl = document.getElementById('volume');
     const playlistElement = document.getElementById('playlist');
-
+    
     const playPauseFooterButton = document.getElementById('play-pause-footer');
     const nextFooterButton = document.getElementById('next-footer');
     const prevFooterButton = document.getElementById('prev-footer');
@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const volumeFooterControl = document.getElementById('volume-footer');
     const songTitleElement = document.getElementById('song-title');
     const songArtistElement = document.getElementById('song-artist');
+
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarPlaylistElement = document.getElementById('sidebar-playlist');
 
     let currentSongIndex = 0;
     let songs = [];
@@ -49,14 +53,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function playSong() {
         audioPlayer.play();
-        playPauseButton.textContent = '⏸️';
-        playPauseFooterButton.textContent = '⏸️';
+        playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        playPauseFooterButton.innerHTML = '<i class="fas fa-pause"></i>';
     }
 
     function pauseSong() {
         audioPlayer.pause();
-        playPauseButton.textContent = '▶️';
-        playPauseFooterButton.textContent = '▶️';
+        playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        playPauseFooterButton.innerHTML = '<i class="fas fa-play"></i>';
     }
 
     function nextSong() {
@@ -73,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderPlaylist() {
         playlistElement.innerHTML = ''; // Clear existing playlist
+        sidebarPlaylistElement.innerHTML = ''; // Clear existing sidebar playlist
         songs.forEach((song, index) => {
             const li = document.createElement('li');
             li.textContent = `${song.title} - ${song.artist}`;
@@ -82,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 playSong();
             });
             playlistElement.appendChild(li);
+            sidebarPlaylistElement.appendChild(li.cloneNode(true));
         });
     }
 
@@ -131,6 +137,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     volumeFooterControl.addEventListener('input', () => {
         audioPlayer.volume = volumeFooterControl.value;
         volumeControl.value = volumeFooterControl.value;
+    });
+
+    // Sidebar toggle functionality
+    hamburger.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
     });
 
     // Load songs when the page is loaded
