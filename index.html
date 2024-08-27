@@ -3,26 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Music Player</title>
+    <title>Custom Music Player</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="player">
-        <div class="cover">
-            <img id="cover" src="cover-placeholder.jpg" alt="Album Cover">
+    <div class="container">
+        <div class="song-list">
+            <div class="search-container">
+                <button id="menu-btn">&#9776;</button>
+                <input type="text" id="song-search" placeholder="song search list">
+                <button id="search-btn">&#128269;</button>
+            </div>
+            <ul id="song-list">
+                <!-- Songs will be dynamically loaded here -->
+            </ul>
         </div>
-        <div class="info">
-            <h2 id="title">Song Title</h2>
-            <h3 id="artist">Artist</h3>
+        <div class="player">
+            <div class="album-art">
+                <img src="album_art_placeholder.png" alt="Album Art" id="album-art">
+            </div>
+            <div class="song-info">
+                <h2 id="song-name">Song Name</h2>
+                <div class="controls">
+                    <button id="prev-btn" class="control-btn">&#9198;</button>
+                    <button id="play-pause-btn" class="control-btn">&#9658;</button>
+                    <button id="next-btn" class="control-btn">&#9197;</button>
+                </div>
+                <div class="progress-container">
+                    <span id="current-time">00:00</span>
+                    <input type="range" id="progress-bar" value="0">
+                    <span id="duration">00:00</span>
+                </div>
+            </div>
         </div>
-        <div class="controls">
-            <button id="prev"><i class="fas fa-backward"></i>Prev</button>
-            <button id="play"><i class="fas fa-play"></i>Play</button>
-            <button id="next"><i class="fas fa-forward"></i>Next</button>
-        </div>
-        <input type="range" id="progress-bar" value="0">
     </div>
-    <ul id="playlist"></ul>
     <script src="app.js"></script>
 </body>
 </html>
