@@ -1,66 +1,36 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const audioPlayer = new Audio();
-    const playPauseButton = document.getElementById('play-pause');
+    const playButton = document.getElementById('play');
     const nextButton = document.getElementById('next');
     const prevButton = document.getElementById('prev');
     const progressBar = document.getElementById('progress-bar');
-    const volumeControl = document.getElementById('volume');
     const playlistElement = document.getElementById('playlist');
-    
-    const playPauseFooterButton = document.getElementById('play-pause-footer');
-    const nextFooterButton = document.getElementById('next-footer');
-    const prevFooterButton = document.getElementById('prev-footer');
-    const progressBarFooter = document.getElementById('progress-bar-footer');
-    const volumeFooterControl = document.getElementById('volume-footer');
-    const songTitleElement = document.getElementById('song-title');
-    const songArtistElement = document.getElementById('song-artist');
-
-    const hamburger = document.getElementById('hamburger');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarPlaylistElement = document.getElementById('sidebar-playlist');
+    const titleElement = document.getElementById('title');
+    const artistElement = document.getElementById('artist');
+    const coverElement = document.getElementById('cover');
 
     let currentSongIndex = 0;
-    let songs = [];
-
-    // GitHub API to fetch the list of songs
-    const repoOwner = "SJKkumar";
-    const repoName = "Music";
-    const directoryPath = "songs";
-
-    async function fetchSongs() {
-        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${directoryPath}`);
-        const files = await response.json();
-        return files
-            .filter(file => file.name.endsWith('.mp3'))
-            .map(file => ({
-                title: file.name.replace('.mp3', ''),
-                artist: 'Unknown Artist', // Default artist name, you can customize it
-                src: file.download_url
-            }));
-    }
-
-    async function loadSongs() {
-        songs = await fetchSongs();
-        loadSong(songs[currentSongIndex]);
-        renderPlaylist();
-    }
+    let songs = [
+        { title: 'Song 1', artist: 'Artist 1', src: 'songs/song1.mp3', cover: 'covers/cover1.jpg' },
+        { title: 'Song 2', artist: 'Artist 2', src: 'songs/song2.mp3', cover: 'covers/cover2.jpg' },
+        { title: 'Song 3', artist: 'Artist 3', src: 'songs/song3.mp3', cover: 'covers/cover3.jpg' },
+    ];
 
     function loadSong(song) {
         audioPlayer.src = song.src;
-        songTitleElement.textContent = song.title;
-        songArtistElement.textContent = song.artist;
+        titleElement.textContent = song.title;
+        artistElement.textContent = song.artist;
+        coverElement.src = song.cover;
     }
 
     function playSong() {
         audioPlayer.play();
-        playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-        playPauseFooterButton.innerHTML = '<i class="fas fa-pause"></i>';
+        playButton.innerHTML = '<i class="fas fa-pause"></i>Pause';
     }
 
     function pauseSong() {
         audioPlayer.pause();
-        playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-        playPauseFooterButton.innerHTML = '<i class="fas fa-play"></i>';
+        playButton.innerHTML = '<i class="fas fa-play"></i>Play';
     }
 
     function nextSong() {
@@ -76,8 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderPlaylist() {
-        playlistElement.innerHTML = ''; // Clear existing playlist
-        sidebarPlaylistElement.innerHTML = ''; // Clear existing sidebar playlist
         songs.forEach((song, index) => {
             const li = document.createElement('li');
             li.textContent = `${song.title} - ${song.artist}`;
@@ -87,11 +55,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 playSong();
             });
             playlistElement.appendChild(li);
-            sidebarPlaylistElement.appendChild(li.cloneNode(true));
         });
     }
 
-    playPauseButton.addEventListener('click', () => {
+    playButton.addEventListener('click', () => {
         if (audioPlayer.paused) {
             playSong();
         } else {
@@ -102,21 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     nextButton.addEventListener('click', nextSong);
     prevButton.addEventListener('click', prevSong);
 
-    playPauseFooterButton.addEventListener('click', () => {
-        if (audioPlayer.paused) {
-            playSong();
-        } else {
-            pauseSong();
-        }
-    });
-
-    nextFooterButton.addEventListener('click', nextSong);
-    prevFooterButton.addEventListener('click', prevSong);
-
     audioPlayer.addEventListener('timeupdate', () => {
         const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         progressBar.value = progressPercent;
-        progressBarFooter.value = progressPercent;
     });
 
     progressBar.addEventListener('input', () => {
@@ -124,26 +79,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         audioPlayer.currentTime = newTime;
     });
 
-    progressBarFooter.addEventListener('input', () => {
-        const newTime = (progressBarFooter.value / 100) * audioPlayer.duration;
-        audioPlayer.currentTime = newTime;
-    });
-
-    volumeControl.addEventListener('input', () => {
-        audioPlayer.volume = volumeControl.value;
-        volumeFooterControl.value = volumeControl.value;
-    });
-
-    volumeFooterControl.addEventListener('input', () => {
-        audioPlayer.volume = volumeFooterControl.value;
-        volumeControl.value = volumeFooterControl.value;
-    });
-
-    // Sidebar toggle functionality
-    hamburger.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-    });
-
-    // Load songs when the page is loaded
-    loadSongs();
+    loadSong(songs[currentSongIndex]);
+    renderPlaylist();
 });
