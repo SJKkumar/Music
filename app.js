@@ -3,16 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
     let songs = [];
 
-    // Fetch songs dynamically from the GitHub repository
+    // Fetch songs dynamically from your GitHub repository
     async function fetchSongs() {
         try {
-            const response = await fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/songs');
+            const response = await fetch('https://api.github.com/repos/SJKkumar/Music/contents/songs');
             const data = await response.json();
             songs = data.filter(item => item.name.endsWith('.mp3')).map(item => ({
                 name: item.name,
                 path: item.download_url
             }));
             loadSongList();
+            if (songs.length > 0) loadSong(0);  // Automatically load the first song
         } catch (error) {
             console.error('Error fetching songs:', error);
         }
