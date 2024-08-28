@@ -8,35 +8,33 @@
 </head>
 <body>
     <div class="container">
-        <div class="song-list">
-            <div class="search-container">
-                <button id="menu-btn">&#9776;</button>
-                <input type="text" id="song-search" placeholder="song search list">
-                <button id="search-btn">&#128269;</button>
+        <div class="song-list-container">
+            <div class="search-bar">
+                <button id="menu-button">&#9776;</button>
+                <input type="text" id="search-input" placeholder="song search list">
             </div>
-            <ul id="song-list">
-                <!-- Songs will be dynamically loaded here -->
-            </ul>
+            <ul id="song-list"></ul>
         </div>
-        <div class="player">
-            <div class="album-art">
-                <img src="default-image.jpg" alt="Album Art" id="album-art">
+        <div class="player-container">
+            <div id="cover-container">
+                <img id="cover-image" src="default-image.jpg" alt="Cover">
             </div>
             <div class="song-info">
-                <h2 id="song-name">Song Name</h2>
+                <p id="song-title">Song Name</p>
                 <div class="controls">
-                    <button id="prev-btn" class="control-btn">&#9198;</button>
-                    <button id="play-pause-btn" class="control-btn">&#9658;</button>
-                    <button id="next-btn" class="control-btn">&#9197;</button>
+                    <button id="prev-button" class="control-button">&#9198;&#65039;</button>
+                    <button id="play-pause-button" class="control-button">&#9654;&#65039;</button>
+                    <button id="next-button" class="control-button">&#9197;&#65039;</button>
                 </div>
                 <div class="progress-container">
                     <span id="current-time">00:00</span>
-                    <input type="range" id="progress-bar" value="0">
+                    <input type="range" id="progress-bar" value="0" step="0.01">
                     <span id="duration">00:00</span>
                 </div>
             </div>
         </div>
     </div>
+    <audio id="audio-player"></audio>
     <script src="app.js"></script>
 </body>
 </html>
