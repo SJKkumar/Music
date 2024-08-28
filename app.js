@@ -1,89 +1,117 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const audio = new Audio();
-    let songIndex = 0;
-
-    const songs = [
-        // Will be populated dynamically
-    ];
-
-    const songListElement = document.getElementById('song-list');
-    const songNameElement = document.getElementById('song-name');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const audioPlayer = document.getElementById('audio-player');
+    const playPauseButton = document.getElementById('play-pause-button');
+    const nextButton = document.getElementById('next-button');
+    const prevButton = document.getElementById('prev-button');
+    const songList = document.getElementById('song-list');
+    const songTitle = document.getElementById('song-title');
+    const coverImage = document.getElementById('cover-image');
     const progressBar = document.getElementById('progress-bar');
-    const currentTimeElement = document.getElementById('current-time');
-    const durationElement = document.getElementById('duration');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationEl = document.getElementById('duration');
+    const searchInput = document.getElementById('search-input');
 
-    // Fetch songs from GitHub repository
-    fetchSongs();
+    let songs = [];
+    let currentSongIndex = 0;
 
-    function fetchSongs() {
-        fetch('https://api.github.com/repos/SJKkumar/Music/contents/songs')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach((file, index) => {
-                    if (file.name.endsWith('.mp3')) {
-                        songs.push(file.download_url);
-                        const li = document.createElement('li');
-                        li.textContent = file.name.replace('.mp3', '');
-                        li.addEventListener('click', () => loadSong(index));
-                        songListElement.appendChild(li);
-                    }
-                });
-                loadSong(songIndex);
+    const fetchSongs = async () => {
+        const response = await fetch('https://api.github.com/repos/yourusername/yourrepository/contents/music/songs');
+        const data = await response.json();
+        songs = data.filter(file => file.name.endsWith('.mp3')).map(file => ({
+            name: file.name.replace('.mp3', ''),
+            url: file.download_url
+        }));
+        renderSongList(songs);
+        loadSong(currentSongIndex);
+    };
+
+    const renderSongList = (songArray) => {
+        songList.innerHTML = '';
+        songArray.forEach((song, index) => {
+            const li = document.createElement('li');
+            li.textContent = song.name;
+            li.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(currentSongIndex);
+                playSong();
             });
-    }
+            songList.appendChild(li);
+        });
+    };
 
-    function loadSong(index) {
-        songIndex = index;
-        audio.src = songs[songIndex];
-        songNameElement.textContent = songListElement.children[songIndex].textContent;
-        playPauseBtn.innerHTML = '&#9658;';
-        audio.play();
-        updateProgress();
-    }
+    const loadSong = (index) => {
+        const song = songs[index];
+        audioPlayer.src = song.url;
+        songTitle.textContent = song.name;
+        fetchEmbeddedImage(song.url);
+    };
 
-    function updateProgress() {
-        progressBar.value = (audio.currentTime / audio.duration) * 100;
-        currentTimeElement.textContent = formatTime(audio.currentTime);
-        durationElement.textContent = formatTime(audio.duration);
+    const fetchEmbeddedImage = async (url) => {
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        const context = new AudioContext();
+        const audioBuffer = await context.decodeAudioData(arrayBuffer);
+        const embeddedPicture = audioBuffer.getChannelData(0); // Placeholder for actual embedded image extraction
 
-        if (!audio.paused) {
-            requestAnimationFrame(updateProgress);
-        }
-    }
+        // Use embedded picture or default image
+        coverImage.src = embeddedPicture ? `data:image/jpeg;base64,${btoa(embeddedPicture)}` : 'default-image.jpg';
+    };
 
-    function formatTime(time) {
+    const playSong = () => {
+        audioPlayer.play();
+        playPauseButton.textContent = '⏸️';
+    };
+
+    const pauseSong = () => {
+        audioPlayer.pause();
+        playPauseButton.textContent = '▶️';
+    };
+
+    const updateProgressBar = () => {
+        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressBar.value = progressPercent;
+        currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+        durationEl.textContent = formatTime(audioPlayer.duration);
+    };
+
+    const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
-        return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
 
-    playPauseBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            playPauseBtn.innerHTML = '&#10074;&#10074;';
+    playPauseButton.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            playSong();
         } else {
-            audio.pause();
-            playPauseBtn.innerHTML = '&#9658;';
+            pauseSong();
         }
     });
 
-    prevBtn.addEventListener('click', () => {
-        songIndex = (songIndex > 0) ? songIndex - 1 : songs.length - 1;
-        loadSong(songIndex);
+    nextButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        loadSong(currentSongIndex);
+        playSong();
     });
 
-    nextBtn.addEventListener('click', () => {
-        songIndex = (songIndex < songs.length - 1) ? songIndex + 1 : 0;
-        loadSong(songIndex);
+    prevButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        loadSong(currentSongIndex);
+        playSong();
     });
 
-    audio.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('timeupdate', updateProgressBar);
 
     progressBar.addEventListener('input', () => {
-        audio.currentTime = (progressBar.value / 100) * audio.duration;
-        updateProgress();
+        audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
     });
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredSongs = songs.filter(song => song.name.toLowerCase().includes(query));
+        renderSongList(filteredSongs);
+    });
+
+    // Fetch and load songs initially
+    fetchSongs();
 });
